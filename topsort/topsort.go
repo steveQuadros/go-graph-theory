@@ -64,5 +64,31 @@ func TopsortKahn(g *graph.Graph) []int {
 
 // TopSort will find the topological ordering of a Tree ()
 func TopSortDFS(g *graph.Graph) []int {
-	return []int{}
+	order := make([]int, len(g.Nodes))
+	idx := len(g.Nodes)-1
+	visited := make([]bool, len(g.Nodes))
+
+	for i := 0; i < len(g.Nodes); i++ {
+		if !visited[i] {
+			visited, order, idx = dft(i, g.Nodes, visited, order, idx)
+		}
+	}
+
+	return order
+}
+
+func dft(at int, nodes []*graph.Node, visited []bool, order []int, idx int) ([]bool, []int, int) {
+	if visited[at] {
+		return visited, order, idx
+	}
+	visited[at] = true
+
+	for node := nodes[at]; node != nil; node = node.Next {
+		visited, order, idx = dft(node.Val, nodes, visited, order, idx)
+	}
+
+	order[idx] = at
+	idx--
+
+	return visited, order, idx
 }
