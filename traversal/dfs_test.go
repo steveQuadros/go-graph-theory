@@ -3,6 +3,7 @@ package traversal
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
+	"github.com/stevequadros/go-graph-theory/graph"
 )
 
 // find components in an undirected graph
@@ -17,12 +18,13 @@ import (
 // component 2
 // - 5
 func TestDFS(t *testing.T) {
-	graph := make([]*Node, 6)
-	graph[0] = &Node{Val:1, Next: &Node{Val:2}}
-	graph[1] = &Node{Val:0, Next: &Node{Val:2}}
-	graph[2] = &Node{Val:0, Next: &Node{Val:1}}
-	graph[3] = &Node{Val:4}
-	graph[4] = &Node{Val:3}
+	graph := graph.New(6, &graph.Options{Directed: false})
+	graph.Insert(0,1)
+	graph.Insert(0,2)
+	graph.Insert(1,2)
+	graph.Insert(1,0)
+	graph.Insert(2,1)
+	graph.Insert(3,4)
 
 	res := Components(graph)
 	assert.Equal(t, 3, res.Count)

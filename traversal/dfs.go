@@ -1,12 +1,17 @@
 package traversal
 
+import (
+	"github.com/stevequadros/go-graph-theory/graph"
+)
+
 // DFS uses DFS to return the number of connected components
 type ComponentResult struct {
 	Components []int
 	Count int
 }
 
-func Components(nodes Graph) ComponentResult {
+func Components(g *graph.Graph) ComponentResult {
+	nodes := g.Nodes
 	components := make([]int, len(nodes))
 	visited := make([]bool, len(nodes))
 	var count int
@@ -29,7 +34,7 @@ func Components(nodes Graph) ComponentResult {
 	}
 }
 
-func dft(component, at int, nodes []*Node, components []int, visited []bool) ([]int, []bool) {
+func dft(component, at int, nodes []*graph.Node, components []int, visited []bool) ([]int, []bool) {
 	if visited[at] {
 		return components, visited
 	}

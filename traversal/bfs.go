@@ -4,6 +4,6 @@ import (
 	"github.com/stevequadros/go-graph-theory/graph"
 )
 
-func ShortestPath(g *graph.Graph) {
+func ShortestPathBFS(g *graph.Graph) {
 
 }

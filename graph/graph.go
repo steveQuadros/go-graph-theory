@@ -16,7 +16,7 @@ func (n *Node) Weight() int {
 }
 
 // a graph that uses an adjacency list
-type graph struct {
+type Graph struct {
 	Nodes []*Node
 	Directed bool
 	Weighted bool
@@ -26,23 +26,24 @@ type Options struct {
 	Directed, Weighted bool
 }
 
-func New(nvertices int, o *Options) *graph {
-	return &graph{
+// create a new graph with nvertices 0 indexed
+func New(nvertices int, o *Options) *Graph {
+	return &Graph{
 		Directed: o.Directed,
 		Weighted: o.Weighted,
-		Nodes: make([]*Node, nvertices+1, nvertices+1),
+		Nodes: make([]*Node, nvertices, nvertices),
 	}
 }
 
-func (g *graph) Insert(x, y int) {
+func (g *Graph) Insert(x, y int) {
 	insertNode(g, x, y, nil, g.Directed)
 }
 
-func (g *graph) InsertWeighted(x, y, weight int) {
+func (g *Graph) InsertWeighted(x, y, weight int) {
 	insertNode(g, x, y, &weight, g.Directed)
 }
 
-func insertNode(g *graph, x, y int, w *int, directed bool) {
+func insertNode(g *Graph, x, y int, w *int, directed bool) {
 	newNode := &Node{Val: y, weight: w}
 	newNode.Next = g.Nodes[x]
 	g.Nodes[x] = newNode
@@ -53,7 +54,7 @@ func insertNode(g *graph, x, y int, w *int, directed bool) {
 }
 
 // String returns an adjacency list representation of a grpah
-func (g *graph) String() string {
+func (g *Graph) String() string {
 	b := &strings.Builder{}
 
 	for i, node := range g.Nodes {
