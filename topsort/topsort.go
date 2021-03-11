@@ -68,27 +68,25 @@ func TopSortDFS(g *graph.Graph) []int {
 	idx := len(g.Nodes)-1
 	visited := make([]bool, len(g.Nodes))
 
+	var dft func(int)
+	dft = func(at int) {
+		if visited[at] {
+			return
+		}
+		visited[at] = true
+		for node := g.Nodes[at]; node != nil; node = node.Next {
+			dft(node.Val)
+		}
+		order[idx] = at
+		idx--
+		return
+	}
+
 	for i := 0; i < len(g.Nodes); i++ {
 		if !visited[i] {
-			visited, order, idx = dft(i, g.Nodes, visited, order, idx)
+			dft(i)
 		}
 	}
 
 	return order
-}
-
-func dft(at int, nodes []*graph.Node, visited []bool, order []int, idx int) ([]bool, []int, int) {
-	if visited[at] {
-		return visited, order, idx
-	}
-	visited[at] = true
-
-	for node := nodes[at]; node != nil; node = node.Next {
-		visited, order, idx = dft(node.Val, nodes, visited, order, idx)
-	}
-
-	order[idx] = at
-	idx--
-
-	return visited, order, idx
 }
