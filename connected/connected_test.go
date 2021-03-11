@@ -1,4 +1,4 @@
-package traversal
+package connected
 
 import (
 	"testing"

@@ -1,4 +1,4 @@
-package traversal
+package connected
 
 import (
 	"github.com/stevequadros/go-graph-theory/graph"

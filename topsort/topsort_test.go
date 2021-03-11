@@ -17,13 +17,13 @@ func TestTopSort(t *testing.T) {
 	g.Insert(3,5)
 	g.Insert(5,4)
 
-	assert.Equal(t, []int{0,6,3,2,1,5,4}, TopsortKahn(g))
+	assert.Equal(t, []int{0,6,3,2,1,5,4}, Kahn(g))
 
 	t.Run("with cycle returns nil", func(t *testing.T) {
 		// create cycle
 		g.Insert(4,5)
 
-		assert.Equal(t, []int(nil), TopsortKahn(g))
+		assert.Equal(t, []int(nil), Kahn(g))
 	})
 }
 

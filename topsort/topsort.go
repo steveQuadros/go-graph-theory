@@ -9,7 +9,7 @@ import (
 
 // Use Kahn's algorithm to topsort
 // returns nil if there is a cycle
-func TopsortKahn(g *graph.Graph) []int {
+func Kahn(g *graph.Graph) []int {
 	nodes := func(nodes []*graph.Node) map[int]*graph.Node {
 		m := map[int]*graph.Node{}
 		for i, n := range nodes {
