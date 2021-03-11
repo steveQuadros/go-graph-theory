@@ -23,3 +23,7 @@ func TestShortestPath(t *testing.T) {
 	assert.Equal(t, []int{0,6,7,10}, ShortestPathBFS(g, 0, 10))
 	assert.Equal(t, []int{}, ShortestPathBFS(g, 1, 6))
 }
+
+func TestShortestPathGrid(t *testing.T) {
+	
+}
