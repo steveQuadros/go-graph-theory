@@ -3,30 +3,34 @@ package graph
 import (
 	"strings"
 	"fmt"
-	"sort"
 )
 
-type node struct {
+type Node struct {
 	Val int
 	weight *int
-	Next *node
+	Next *Node
 }
 
-func (n *node) Weight() int {
+func (n *Node) Weight() int {
 	return *n.weight
 }
 
 // a graph that uses an adjacency list
 type graph struct {
-	Nodes map[int]*node
+	Nodes []*Node
 	Directed bool
-	weighted bool
+	Weighted bool
 }
 
-func New(directed bool) *graph {
+type Options struct {
+	Directed, Weighted bool
+}
+
+func New(nvertices int, o *Options) *graph {
 	return &graph{
-		Directed: directed,
-		Nodes: map[int]*node{},
+		Directed: o.Directed,
+		Weighted: o.Weighted,
+		Nodes: make([]*Node, nvertices+1, nvertices+1),
 	}
 }
 
@@ -39,8 +43,7 @@ func (g *graph) InsertWeighted(x, y, weight int) {
 }
 
 func insertNode(g *graph, x, y int, w *int, directed bool) {
-	newNode := &node{Val: y, weight: w}
-	g.Nodes[y] = g.Nodes[y]
+	newNode := &Node{Val: y, weight: w}
 	newNode.Next = g.Nodes[x]
 	g.Nodes[x] = newNode
 
@@ -52,19 +55,12 @@ func insertNode(g *graph, x, y int, w *int, directed bool) {
 // String returns an adjacency list representation of a grpah
 func (g *graph) String() string {
 	b := &strings.Builder{}
-	nodeKeys := func() []int {
-		keys := []int{}
-		for k, _ := range g.Nodes {
-			keys = append(keys, k)
-		}
-		sort.Ints(keys)
-		return keys
-	}()
 
-	for _, k := range nodeKeys {
-		fmt.Fprintf(b, "%d => ", k)
-		for node := g.Nodes[k]; node != nil; node = node.Next {
+	for i, node := range g.Nodes {
+		fmt.Fprintf(b, "%d => ", i)
+		for node != nil {
 			fmt.Fprintf(b, "%d -> ", node.Val)
+			node = node.Next
 		}
 		fmt.Fprint(b, "\n")
 	}

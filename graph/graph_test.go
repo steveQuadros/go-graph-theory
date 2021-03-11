@@ -7,17 +7,15 @@ import (
 )
 
 func TestNewGraph(t *testing.T) {
-	g := graph.New(false)
+	g := graph.New(0, &graph.Options{Directed: false})
 	assert.NotNil(t, g)
 }
 
 func TestInsertNode(t *testing.T) {
 	t.Run("directed", func(t *testing.T) {
-		g := graph.New(true)
+		g := graph.New(2, &graph.Options{Directed: true})
 
 		g.Insert(1,2)
-		assert.Len(t, g.Nodes, 2)
-
 		g.Insert(2,1)
 
 		node1 := g.Nodes[1]
@@ -28,7 +26,7 @@ func TestInsertNode(t *testing.T) {
 	})
 
 	t.Run("undirected should insert an edge each way", func(t *testing.T) {
-		g := graph.New(false)
+		g := graph.New(2, &graph.Options{Directed: false})
 		g.Insert(1,2)
 
 		node1 := g.Nodes[1]
@@ -46,7 +44,7 @@ func TestString(t *testing.T) {
 3 => 
 `
 
-	g := graph.New(true)
+	g := graph.New(3, &graph.Options{Directed: true})
 	g.Insert(0,1)
 	g.Insert(0,2)
 	g.Insert(1,2)

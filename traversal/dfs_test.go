@@ -24,7 +24,7 @@ func TestDFS(t *testing.T) {
 	graph[3] = &Node{Val:4}
 	graph[4] = &Node{Val:3}
 
-	res := DFS(graph)
+	res := Components(graph)
 	assert.Equal(t, 3, res.Count)
 
 	// should be in same component

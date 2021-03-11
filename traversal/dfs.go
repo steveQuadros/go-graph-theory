@@ -1,16 +1,12 @@
 package traversal
 
-type Node struct {
-	Val int
-	Next *Node
-}
-
 // DFS uses DFS to return the number of connected components
 type ComponentResult struct {
 	Components []int
 	Count int
 }
-func DFS(nodes []*Node) ComponentResult {
+
+func Components(nodes Graph) ComponentResult {
 	components := make([]int, len(nodes))
 	visited := make([]bool, len(nodes))
 	var count int
