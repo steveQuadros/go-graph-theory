@@ -7,7 +7,7 @@ import (
 )
 
 func TestShortestPath(t *testing.T) {
-	g := graph.New(10, &graph.Options{Directed: true})
+	g := graph.New(11, &graph.Options{Directed: true})
 	g.Insert(0,1)
 	g.Insert(0,2)
 	g.Insert(0,6)
@@ -17,6 +17,9 @@ func TestShortestPath(t *testing.T) {
 	g.Insert(4,7)
 	g.Insert(4,9)
 	g.Insert(5,8)
+	g.Insert(6,7)
+	g.Insert(7,10)
 	g.Insert(9,10)
-	assert.Len(t, g.Nodes, 10)
+	assert.Equal(t, []int{0,6,7,10}, ShortestPathBFS(g, 0, 10))
+	assert.Equal(t, []int{}, ShortestPathBFS(g, 1, 6))
 }
