@@ -9,6 +9,12 @@ import (
 
 // Use Kahn's algorithm to topsort
 // returns nil if there is a cycle
+// time: O(V + E) (calc indegree is also O(V + E))
+// Space: 
+//  - O(n) for mapping nodes
+//  - O(n) for inDegree
+//  - O(n) for order
+//  - O(n) for Queue
 func Kahn(g *graph.Graph) []int {
 	nodes := func(nodes []*graph.Node) map[int]*graph.Node {
 		m := map[int]*graph.Node{}
@@ -62,7 +68,9 @@ func Kahn(g *graph.Graph) []int {
 	return order
 }
 
-// TopSort will find the topological ordering of a Tree ()
+// TopSort will find the topological ordering of a Tree (Dag Acyclic graph)
+// Time: O(V + E)
+// Space: ?? O(V + E) for our recursive stack 
 func TopSortDFS(g *graph.Graph) []int {
 	order := make([]int, len(g.Nodes))
 	idx := len(g.Nodes)-1

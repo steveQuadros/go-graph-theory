@@ -53,16 +53,13 @@ func reverse(nums []int) []int {
 	return nums
 }
 
-// Djikstra's algorithm can return the shortest path from source to dest given non negative weights
-// func Djikstra(g *graph.Graph, source, dest int) []int {
-// 	return 
-// }
-
 // The user experience of returning a slice of pointer to ints is no good
 // I would normally either
 // - wrap the output in something that would provide a `get` method for a vertex, eg: res.get(4) would return the path from source->4
 // - or potentially limit the weight of my nodes to be less than math.MaxInt
 // - use []*int and do a bunch of dereferencing :(
+// Time: O(V + E)
+// Space 
 func DAGSP(g *graph.Graph, start int) []int {
 	topOrder := topsort.Kahn(g)
 	distance := make([]int, len(g.Nodes))
@@ -89,3 +86,18 @@ func DAGSP(g *graph.Graph, start int) []int {
 // func LonestPath(g *graph.Graph, source, dest int) int {
 // 	return int(math.Inf(-1))
 // }
+
+// Djikstra's algorithm can return the shortest path from 
+// source to dest given non negative weights
+// it runs in 
+func Djikstra(g *graph.Graph, start int) []int {
+	distance := make([]int, len(g.Nodes))
+	for i := 0; i < len(distance); i++ {
+		if i == start {
+			distance[i] = 0
+		} else {
+			distance[i] = math.MaxInt8
+		}
+	}
+	return distance
+}
