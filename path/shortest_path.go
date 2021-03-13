@@ -135,3 +135,32 @@ func Djikstra(g *graph.Graph, start, end int) ([]int, []int) {
 	}
 	return distance, sp
 }
+
+func BellmanFord(g *graph.Graph, start int) ([]float64, []int) {
+	dist, path := make([]float64, len(g.Nodes)), []int{}
+	for i := 0; i < len(dist); i++ {
+		dist[i] = math.Inf(1)
+	}
+	dist[start] = 0 
+
+	for i := 0; i < len(g.Nodes); i++ {
+		for j := 0; j < len(g.Nodes); j++ {
+			for node := g.Nodes[j]; node != nil; node = node.Next {
+				if dist[j] + float64(node.Weight()) < dist[node.Val] {
+					dist[node.Val] = dist[j] + float64(node.Weight())
+				}
+			}	
+		}
+	}
+
+	for i := 0; i < len(g.Nodes); i++ {
+		for j := 0; j < len(g.Nodes); j++ {
+			for node := g.Nodes[j]; node != nil; node = node.Next {
+				if dist[j] + float64(node.Weight()) < dist[node.Val] {
+					dist[node.Val] = math.Inf(-1)
+				}
+			}	
+		}
+	}
+	return dist, path
+}

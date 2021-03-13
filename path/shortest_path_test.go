@@ -2,6 +2,7 @@ package path
 
 import (
 	"testing"
+	"math"
 	"github.com/stevequadros/go-graph-theory/graph"
 	"github.com/stretchr/testify/assert"
 )
@@ -105,4 +106,25 @@ func TestDjikstra(t *testing.T) {
 		assert.Equal(t, -1, path[0])
 		assert.Equal(t, -1, path[1])
 	})
+}
+
+func TestBellmanFord(t *testing.T) {
+	g := graph.New(10, &graph.Options{Directed: true, Weighted: true})
+	g.InsertWeighted(0,1,5)
+	g.InsertWeighted(1,6,60)
+	g.InsertWeighted(1,2,20)
+	g.InsertWeighted(1,5,30)
+	g.InsertWeighted(2,3,10)
+	g.InsertWeighted(2,4,75)
+	g.InsertWeighted(3,2,-15)
+	g.InsertWeighted(4,9,100)
+	g.InsertWeighted(5,8,50)
+	g.InsertWeighted(5,6,5)
+	g.InsertWeighted(6,7,-50)
+	g.InsertWeighted(7,8,-10)
+
+	dist, _ := BellmanFord(g, 0)
+	assert.Equal(t, 0.0, dist[0])
+	assert.Equal(t, 5.0, dist[1])
+	assert.Equal(t, math.Inf(-1), dist[2])
 }
