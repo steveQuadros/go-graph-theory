@@ -12,7 +12,7 @@ func TestMinPQ(t *testing.T) {
 	}
 
 	for i := 1; i < 8; i++ {
-		_, weight := q.Poll()
+		_, weight := q.RemoveMin()
 		assert.Equal(t, i, weight)
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"math"
 	"github.com/stevequadros/go-graph-theory/graph"
 	"github.com/stevequadros/go-graph-theory/topsort"
+	"github.com/stevequadros/go-graph-theory/pq"
 )
 
 var Infinity = int(math.Inf(1))
@@ -105,7 +106,7 @@ func Djikstra(g *graph.Graph, start, end int) ([]int, []int) {
 		paths[i] = -1
 	}
 
-	pq := &PQ{}
+	pq := pq.NewMinPQ()
 	pq.Add(start, 0)
 	
 	for !pq.Empty() {
@@ -134,40 +135,3 @@ func Djikstra(g *graph.Graph, start, end int) ([]int, []int) {
 	}
 	return distance, sp
 }
-
-type PQ struct {
-	items [][2]int	
-}
-
-func (p *PQ) Add(to, weight int) {
-	p.items = append(p.items, [2]int{to, weight})
-	idx := len(p.items)-1
-	pidx := (idx-1)/2
-	for idx >= 0 && p.items[idx][1] < p.items[pidx][1] {
-		p.items[idx], p.items[pidx] = p.items[pidx], p.items[idx]
-		idx = pidx
-		pidx = (idx-1)/2
-	}
-}
-
-func (p *PQ) RemoveMin() (to, weight int) {
-	idx := 0
-	to, weight = p.items[idx][0], p.items[idx][1]
-	p.items[idx] = p.items[len(p.items)-1]
-	p.items = p.items[:len(p.items)-1]
-
-	maxIdx := len(p.items)-1
-	for idx*2+1 <  maxIdx {
-		ci := idx*2+1
-		if  ci < maxIdx-1 && p.items[ci+1][1] < p.items[ci][1] {
-			ci+=1
-		}
-		p.items[idx], p.items[ci] = p.items[ci], p.items[idx]
-		idx = ci
-	}
-	return to, weight
-}
-
-func (p *PQ) Empty() bool {
-	return len(p.items) == 0
-} 
