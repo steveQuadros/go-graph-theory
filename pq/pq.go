@@ -38,20 +38,16 @@ func (q *MinPQ) Poll() (to, weight int) {
 	q.swap(idx,j)
 	q.items = q.items[:q.Size()-1]
 
-	l, r := childIdx(idx)
-	var ci int
-	for l < q.Size() {
-		if r >= q.Size() || q.items[l][1] < q.items[r][1] {
-			ci = l
-		} else {
-			ci = r
+	maxIdx := q.Size()-1
+	for idx*2+1 < maxIdx {
+		ci := idx*2+1
+		if ci < maxIdx-1 && q.items[ci+1][1] < q.items[ci][1] {
+			ci+=1
 		}
-		if q.items[idx][1] > q.items[ci][1] {
-			q.swap(idx, ci)
-		}
+		q.swap(idx, ci)
 		idx = ci
-		l, r = childIdx(idx)
 	}
+	
 	return to, weight
 }
 

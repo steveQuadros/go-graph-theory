@@ -90,7 +90,7 @@ func DAGSP(g *graph.Graph, start int) []int {
 // Djikstra's algorithm can return the shortest path from 
 // source to dest given non negative weights
 // it runs in 
-func Djikstra(g *graph.Graph, start int) []int {
+func Djikstra(g *graph.Graph, start, end int) ([]int, []int) {
 	distance := make([]int, len(g.Nodes))
 	for i := 0; i < len(distance); i++ {
 		if i == start {
@@ -99,5 +99,75 @@ func Djikstra(g *graph.Graph, start int) []int {
 			distance[i] = math.MaxInt8
 		}
 	}
-	return distance
+
+	paths := make([]int, len(g.Nodes))
+	for i := 0; i < len(paths); i++ {
+		paths[i] = -1
+	}
+
+	pq := &PQ{}
+	pq.Add(start, 0)
+	
+	for !pq.Empty() {
+		at, weight := pq.RemoveMin()
+		if at == end {
+			break
+		}
+
+		for node := g.Nodes[at]; node != nil; node = node.Next {
+			newDist := weight + node.Weight()
+			if newDist < distance[node.Val] {
+				distance[node.Val] = newDist
+				pq.Add(node.Val, newDist)
+				paths[node.Val] = at
+			}
+		}
+	}
+
+	sp := []int{}
+	for {
+		sp = append(sp, end)
+		if end == start || paths[end] == -1 {
+			break
+		}
+		end = paths[end]
+	}
+	return distance, sp
 }
+
+type PQ struct {
+	items [][2]int	
+}
+
+func (p *PQ) Add(to, weight int) {
+	p.items = append(p.items, [2]int{to, weight})
+	idx := len(p.items)-1
+	pidx := (idx-1)/2
+	for idx >= 0 && p.items[idx][1] < p.items[pidx][1] {
+		p.items[idx], p.items[pidx] = p.items[pidx], p.items[idx]
+		idx = pidx
+		pidx = (idx-1)/2
+	}
+}
+
+func (p *PQ) RemoveMin() (to, weight int) {
+	idx := 0
+	to, weight = p.items[idx][0], p.items[idx][1]
+	p.items[idx] = p.items[len(p.items)-1]
+	p.items = p.items[:len(p.items)-1]
+
+	maxIdx := len(p.items)-1
+	for idx*2+1 <  maxIdx {
+		ci := idx*2+1
+		if  ci < maxIdx-1 && p.items[ci+1][1] < p.items[ci][1] {
+			ci+=1
+		}
+		p.items[idx], p.items[ci] = p.items[ci], p.items[idx]
+		idx = ci
+	}
+	return to, weight
+}
+
+func (p *PQ) Empty() bool {
+	return len(p.items) == 0
+} 
